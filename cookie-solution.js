@@ -24,9 +24,22 @@ const updateCookie = (values) => {
   document.cookie = `cookie-solution=${ values.join(",") }; expires=${ expireDate.toUTCString() }; path="/"`;
 };
 
+const closePanel = () => {
+  // remove panel
+  const wrapper = document.getElementById("cookie-solution");
+  wrapper.remove();
+
+  // render edit button
+  renderEditButton();
+};
+
+const getCookie = () => {
+  return document.cookie.split(";").filter((item) => item.startsWith("cookie-solution="));
+}
+
 const getSelected = () => {
   let arrayValues = [];
-  const cookie = document.cookie.split(";").filter((item) => item.startsWith("cookie-solution="));
+  const cookie = getCookie();
   if (cookie[0]) {
     const cookieValue = cookie[0].split("=")[1];
     if (cookieValue) {
@@ -36,14 +49,24 @@ const getSelected = () => {
   return arrayValues;
 };
 
+const checkCookie = () => {
+  const cookie = getCookie();
+  if (cookie[0]) {
+    return true;
+  }
+  return false;
+};
+
 const setSelected = () => {
   const checkboxes = [...document.getElementsByClassName("cookie-solution-checkbox")];
   const selected = checkboxes.filter((item) => item.checked).map((item) => item.id);
   updateCookie(selected);
+  closePanel();
 };
 
 const rejectAll = () => {
   updateCookie(["-1"]);
+  closePanel();
 };
 
 const createHtmlElement = (tag, className, id, type) => {
@@ -52,9 +75,9 @@ const createHtmlElement = (tag, className, id, type) => {
   if (id) el.id = id;
   if (type) el.type = type;
   return el;
-}
+};
 
-const init = () => {
+const renderPanel = () => {
   // panel
   const panel = createHtmlElement("div", "cookie-solution-panel");
   const title = createHtmlElement("p");
@@ -95,14 +118,41 @@ const init = () => {
   panel.appendChild(btnAccept);
   
   // wrapper
-  const wrapper = createHtmlElement("div", "cookie-solution");
+  const wrapper = createHtmlElement("div", "cookie-solution", "cookie-solution");
   wrapper.appendChild(panel);
   document.body.appendChild(wrapper);
 
   // style
   const style = document.createElement("style");
-  style.innerHTML = ".cookie-solution {} .cookie-solution-panel { position: absolute; z-index:9999; background-color: #FFFFFF; width: 80vw; left: 10vw; } .cookie-solution-element { padding: 10px 20px; } .cookie-solution:after { content: ''; background-color: rgb(0 0 0 / 80%); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999}";
+  style.innerHTML = ".cookie-solution {} .cookie-solution-panel { position: absolute; z-index:9999; background-color: #FFFFFF; width: 80vw; left: 10vw; top: 5vh;} .cookie-solution-element { padding: 10px 20px; } .cookie-solution:after { content: ''; background-color: rgb(0 0 0 / 80%); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999}";
   document.body.appendChild(style);
+};
+
+const editPurposes = () => {
+  // remove edit button
+  const btnEdit = document.getElementById("btn-edit");
+  btnEdit.remove();
+
+  // open panel
+  renderPanel();
+};
+
+const renderEditButton = () => {
+  // edit button
+  const btnEdit = createHtmlElement("button", "btn-edit", "btn-edit");
+  btnEdit.onclick = editPurposes;
+  btnEdit.innerHTML = "Edit";
+  document.body.appendChild(btnEdit);
+};
+
+const init = () => {
+  if (checkCookie()) {
+    // edit button
+    renderEditButton();
+  } else {
+    // open panel
+    renderPanel();
+  }
 }
 
 init();
