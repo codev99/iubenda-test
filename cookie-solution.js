@@ -175,4 +175,4 @@ const cookieSolution = {
 
 cookieSolution.init();
 
-module.exports = cookieSolution;
+if (typeof module === "object") module.exports = cookieSolution;

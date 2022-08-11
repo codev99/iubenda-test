@@ -38,4 +38,4 @@ window.addEventListener('load', () => {
   infoBoxes.setBoxes();
 });
 
-module.exports = infoBoxes;
+if (typeof module === "object") module.exports = infoBoxes;
