@@ -8,3 +8,6 @@ npm run test
 
 Time spent:
 6h
+
+With more time:
+I would have written many more tests
