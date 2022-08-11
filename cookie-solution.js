@@ -29,6 +29,8 @@ const cookieSolution = {
     // remove panel
     const wrapper = document.getElementById("cookie-solution");
     wrapper.remove();
+    const style = document.getElementById("style-cookie-panel");
+    style.remove();
 
     // render edit button
     cookieSolution.renderEditButton();
@@ -81,7 +83,7 @@ const cookieSolution = {
   renderPanel: () => {
     // panel
     const panel = cookieSolution.createHtmlElement("div", "cookie-solution-panel", "cookie-solution-panel");
-    const title = cookieSolution.createHtmlElement("p");
+    const title = cookieSolution.createHtmlElement("p", "cookie-title");
     title.innerHTML = "We and selected third parties use cookies for technical purposes and, with your consent, for other purposes";
     panel.appendChild(title);
 
@@ -106,17 +108,22 @@ const cookieSolution = {
       panel.appendChild(el);
     });
 
+    // footer
+    const footer = cookieSolution.createHtmlElement("div", "cookie-footer");
+
     // accept button
     const btnReject = cookieSolution.createHtmlElement("button", "btn-Reject");
     btnReject.onclick = cookieSolution.rejectAll;
     btnReject.innerHTML = "Reject";
-    panel.appendChild(btnReject);
+    footer.appendChild(btnReject);
 
     // reject button
     const btnAccept = cookieSolution.createHtmlElement("button", "btn-accept");
     btnAccept.onclick = cookieSolution.setSelected;
     btnAccept.innerHTML = "Accept";
-    panel.appendChild(btnAccept);
+    footer.appendChild(btnAccept);
+
+    panel.appendChild(footer);
   
     // wrapper
     const wrapper = cookieSolution.createHtmlElement("div", "cookie-solution", "cookie-solution");
@@ -125,7 +132,8 @@ const cookieSolution = {
 
     // style
     const style = document.createElement("style");
-    style.innerHTML = ".cookie-solution {} .cookie-solution-panel { position: absolute; z-index:9999; background-color: #FFFFFF; width: 80vw; left: 10vw; top: 5vh;} .cookie-solution-element { padding: 10px 20px; } .cookie-solution:after { content: ''; background-color: rgb(0 0 0 / 80%); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999}";
+    style.id = "style-cookie-panel";
+    style.innerHTML = ".cookie-solution {} .cookie-solution-panel { position: absolute; z-index:9999; background-color: #FFFFFF; width: 80vw; left: 10vw; top: 5vh;} .cookie-title { padding: 0 25px; } .cookie-solution-element { padding: 10px 20px; } .cookie-solution:after { content: ''; background-color: rgb(0 0 0 / 80%); position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 999} .cookie-footer { padding: 0 25px 25px; text-align: right; } .cookie-footer button { margin-left: 10px; }";
     document.body.appendChild(style);
   },
 
@@ -133,6 +141,8 @@ const cookieSolution = {
     // remove edit button
     const btnEdit = document.getElementById("btn-edit");
     btnEdit.remove();
+    const style = document.getElementById("style-cookie-btn");
+    style.remove();
 
     // open panel
     cookieSolution.renderPanel();
@@ -142,8 +152,14 @@ const cookieSolution = {
     // edit button
     const btnEdit = cookieSolution.createHtmlElement("button", "btn-edit", "btn-edit");
     btnEdit.onclick = cookieSolution.editPurposes;
-    btnEdit.innerHTML = "Edit";
+    btnEdit.innerHTML = "Edit Preferences";
     document.body.appendChild(btnEdit);
+
+    // style
+    const style = document.createElement("style");
+    style.id = "style-cookie-btn";
+    style.innerHTML = ".cookie-solution {} .btn-edit { position: fixed; bottom: 20px; right: 20px; }";
+    document.body.appendChild(style);
   },
 
   init: () => {
